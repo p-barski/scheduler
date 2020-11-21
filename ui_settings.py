@@ -21,3 +21,6 @@ class Settings:
 	SAVE_CHANGES_BUTTON_TEXT: Final[str] = "Save changes"
 	EDIT_TASK_BUTTON_TEXT: Final[str] = "Edit"
 	DELETE_TASK_BUTTON_TEXT: Final[str] = "Delete"
+
+	TIME_FORMAT = "%H:%M"
+	DATE_FORMAT = "%d.%m.%Y"

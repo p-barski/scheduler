@@ -18,6 +18,7 @@ class TaskViewingWidget(qtw.QWidget):
 
 		self._db = db
 		self._factory = factory
+		self._settings = settings
 
 		main_layout = qtw.QVBoxLayout()
 		self.setLayout(main_layout)
@@ -64,7 +65,9 @@ class TaskViewingWidget(qtw.QWidget):
 		self._redraw_tasks()
 
 	def _update_date_label(self):
-		self._date_label.setText(self._current_date.strftime("%d.%m.%Y"))
+		self._date_label.setText(
+		    self._current_date.strftime(self._settings.DATE_FORMAT)
+		)
 
 	def _redraw_tasks(self):
 		"""Redraws task widgets."""
