@@ -16,7 +16,9 @@ class Settings:
 	SUMMARY_TEXT: Final[str] = "Summary"
 	SUMMARY_TEXT_MAX_LENGTH: Final[int] = 100
 	DESCRIPTION_TEXT: Final[str] = "Description"
+	DESCRIPTION_TEXT_MAX_LENGTH: Final[int] = 200
 	CANCEL_BUTTON_TEXT: Final[str] = "Cancel"
+	NOTIFICATION_CHECKBOX_TEXT: Final[str] = "Turn on notification"
 
 	SAVE_CHANGES_BUTTON_TEXT: Final[str] = "Save changes"
 	EDIT_TASK_BUTTON_TEXT: Final[str] = "Edit"

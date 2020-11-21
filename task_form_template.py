@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg
 from ui_settings import Settings
 
 
@@ -16,7 +17,9 @@ class TaskFormTemplate(qtw.QWidget):
 		)
 
 		self.description_text_edit = qtw.QTextEdit(
-		    placeholderText=settings.DESCRIPTION_TEXT
+		    placeholderText=settings.DESCRIPTION_TEXT,
+		    textChanged=lambda: self.
+		    _enforce_text_edit_length(settings.DESCRIPTION_TEXT_MAX_LENGTH)
 		)
 
 		text_layout = qtw.QVBoxLayout()
@@ -25,7 +28,9 @@ class TaskFormTemplate(qtw.QWidget):
 
 		self.cancel_button = qtw.QPushButton(text=settings.CANCEL_BUTTON_TEXT)
 
-		self.confirm_button = qtw.QPushButton(text=settings.CONFIRM_BUTTON_TEXT)
+		self.confirm_button = qtw.QPushButton(
+		    text=settings.CONFIRM_BUTTON_TEXT, enabled=False
+		)
 
 		self.notification_checkbox = qtw.QCheckBox(
 		    text=settings.NOTIFICATION_CHECKBOX_TEXT,
@@ -53,3 +58,13 @@ class TaskFormTemplate(qtw.QWidget):
 		main_layout.addLayout(text_layout)
 		main_layout.addLayout(second_layout)
 		main_layout.addLayout(button_layout)
+
+	def _enforce_text_edit_length(self, max_length: int):
+		text = self.description_text_edit.toPlainText()
+		if len(text) > max_length:
+			self.description_text_edit.setPlainText(text[:max_length])
+			#When changing text, cursor is moved to the beginning,
+			#this moves it to the end
+			cursor = self.description_text_edit.textCursor()
+			cursor.setPosition(max_length)
+			self.description_text_edit.setTextCursor(cursor)
