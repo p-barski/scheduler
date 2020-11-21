@@ -22,7 +22,7 @@ class TaskCreationWidget(TaskFormTemplate):
 		time = self.time_edit.dateTime().toPyDateTime()
 		summary = self.summary_line_edit.text()
 		descr = self.description_text_edit.toPlainText()
-		self._db.save_task(Task(summary, descr))
+		self._db.save_task(Task(summary, descr, time))
 		self.summary_line_edit.clear()
 		self.description_text_edit.clear()
 		print(f"{time}:{type(time)}:{summary}:{descr}")
