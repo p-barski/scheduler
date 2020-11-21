@@ -23,19 +23,33 @@ class TaskFormTemplate(qtw.QWidget):
 		text_layout.addWidget(self.summary_line_edit)
 		text_layout.addWidget(self.description_text_edit)
 
-		#TODO current date
-		self.time_edit = qtw.QDateTimeEdit(
-		    dateTime=qtc.QDateTime(qtc.QDate(2020, 11, 30), qtc.QTime(8, 30, 0))
-		)
-
 		self.cancel_button = qtw.QPushButton(text=settings.CANCEL_BUTTON_TEXT)
 
 		self.confirm_button = qtw.QPushButton(text=settings.CONFIRM_BUTTON_TEXT)
+
+		self.notification_checkbox = qtw.QCheckBox(
+		    text=settings.NOTIFICATION_CHECKBOX_TEXT,
+		    layoutDirection=qtc.Qt.RightToLeft,
+		    sizePolicy=qtw.QSizePolicy(
+		        qtw.QSizePolicy.MinimumExpanding, qtw.QSizePolicy.Fixed
+		    )
+		)
+
+		self.time_edit = qtw.QDateTimeEdit(
+		    dateTime=qtc.QDateTime.currentDateTime().addSecs(60 * 60),
+		    sizePolicy=qtw.QSizePolicy(
+		        qtw.QSizePolicy.Fixed, qtw.QSizePolicy.Fixed
+		    )
+		)
+
+		second_layout = qtw.QHBoxLayout()
+		second_layout.addWidget(self.time_edit)
+		second_layout.addWidget(self.notification_checkbox)
 
 		button_layout = qtw.QHBoxLayout()
 		button_layout.addWidget(self.cancel_button)
 		button_layout.addWidget(self.confirm_button)
 
 		main_layout.addLayout(text_layout)
-		main_layout.addWidget(self.time_edit)
+		main_layout.addLayout(second_layout)
 		main_layout.addLayout(button_layout)
