@@ -14,12 +14,21 @@ class DB:
 		"""Returns tuple of tasks from given day."""
 		#TODO
 		print(f"{DB.__name__}:{self.get_tasks.__name__}:{date_filter}")
-		return tuple(self.tasks)
+		return tuple(
+		    sorted(
+		        tuple(
+		            task for task in self.tasks
+		            if task.datetime.date() == date_filter
+		        ),
+		        key=lambda task: task.datetime
+		    )
+		)
 
 	def save_task(self, task: Task):
 		"""Saves task in database."""
 		#TODO
-		self.tasks.append(task)
+		if task not in self.tasks:
+			self.tasks.append(task)
 		print(f"{DB.__name__}:{self.save_task.__name__}:{task}")
 
 	def delete_task(self, task: Task):
