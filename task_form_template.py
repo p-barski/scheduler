@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from PyQt5 import QtGui as qtg
 from ui_settings import Settings
 
 
@@ -13,7 +12,8 @@ class TaskFormTemplate(qtw.QWidget):
 
 		self.summary_line_edit = qtw.QLineEdit(
 		    placeholderText=settings.SUMMARY_TEXT,
-		    maxLength=settings.SUMMARY_TEXT_MAX_LENGTH
+		    maxLength=settings.SUMMARY_TEXT_MAX_LENGTH,
+		    textChanged=self._enforce_summary_not_empty
 		)
 
 		self.description_text_edit = qtw.QTextEdit(
@@ -58,6 +58,13 @@ class TaskFormTemplate(qtw.QWidget):
 		main_layout.addLayout(text_layout)
 		main_layout.addLayout(second_layout)
 		main_layout.addLayout(button_layout)
+
+	def _enforce_summary_not_empty(self):
+		if len(self.summary_line_edit.text()
+		       ) > 0 and not self.confirm_button.isEnabled():
+			self.confirm_button.setEnabled(True)
+		elif len(self.summary_line_edit.text()) == 0:
+			self.confirm_button.setEnabled(False)
 
 	def _enforce_text_edit_length(self, max_length: int):
 		text = self.description_text_edit.toPlainText()
