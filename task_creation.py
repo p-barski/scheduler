@@ -18,11 +18,10 @@ class TaskCreationWidget(TaskFormTemplate):
 
 	def _on_create(self):
 		"""Creates task."""
-		#TODO fields should not be empty, disable confirm button when it's empty
 		time = self.time_edit.dateTime().toPyDateTime()
 		summary = self.summary_line_edit.text()
 		descr = self.description_text_edit.toPlainText()
-		self._db.save_task(Task(summary, descr, time))
+		notification = self.notification_checkbox.isChecked()
+		self._db.save_task(Task(summary, descr, time, notification))
 		self.summary_line_edit.clear()
 		self.description_text_edit.clear()
-		print(f"{time}:{type(time)}:{summary}:{descr}")
