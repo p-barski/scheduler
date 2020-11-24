@@ -24,5 +24,7 @@ class Settings:
 	EDIT_TASK_BUTTON_TEXT: Final[str] = "Edit"
 	DELETE_TASK_BUTTON_TEXT: Final[str] = "Delete"
 
-	TIME_FORMAT = "%H:%M"
-	DATE_FORMAT = "%d.%m.%Y"
+	NOTIFICATION_TITLE: Final[str] = "Task reminder"
+
+	TIME_FORMAT: Final[str] = "%H:%M"
+	DATE_FORMAT: Final[str] = "%d.%m.%Y"
