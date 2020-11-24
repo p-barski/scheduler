@@ -6,6 +6,7 @@ from task_viewing import TaskViewingWidget
 from task_creation import TaskCreationWidget
 from task_edition import TaskEditionWidget
 from ui_settings import Settings
+from notifier import Notifier
 from database import DB
 
 
@@ -17,6 +18,8 @@ class MainWindow(qtw.QWidget):
 		super().__init__()
 		self.settings = Settings()
 		self.db = DB()
+		self.notifier = Notifier(self.db, self.settings.NOTIFICATION_TITLE)
+		self.notifier.start()
 		self.factory = TaskWidgetFactory(
 		    self.settings, self._switch_to_task_editing, self._delete_task
 		)
@@ -71,9 +74,12 @@ class MainWindow(qtw.QWidget):
 		self.task_edition.show()
 
 	def _delete_task(self, task: Task):
-		print(f"{self._delete_task.__name__}")
 		self.db.delete_task(task)
 		self.task_deleted_event.emit()
+
+	def closeEvent(self, event):
+		"""Overridden method, called when closing widget."""
+		self.notifier.stop()
 
 
 if __name__ == "__main__":
