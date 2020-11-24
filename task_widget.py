@@ -20,6 +20,8 @@ class TaskWidget(qtw.QWidget):
 
 		summary_label = qtw.QLabel(task.summary)
 		description_label = qtw.QLabel(task.description)
+		date_label = qtw.QLabel(task.datetime.strftime(settings.TIME_FORMAT))
+		notification_label = qtw.QLabel(str(task.notification))
 
 		edit_button = qtw.QPushButton(
 		    text=settings.EDIT_TASK_BUTTON_TEXT, clicked=lambda: on_edit(task)
@@ -30,6 +32,8 @@ class TaskWidget(qtw.QWidget):
 
 		task_details_layout.addWidget(summary_label)
 		task_details_layout.addWidget(description_label)
+		task_details_layout.addWidget(date_label)
+		task_details_layout.addWidget(notification_label)
 
 		main_layout.addLayout(task_details_layout)
 		main_layout.addWidget(edit_button)
