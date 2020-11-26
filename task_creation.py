@@ -21,7 +21,7 @@ class TaskCreationWidget(TaskFormTemplate):
 		time = self.time_edit.dateTime().toPyDateTime()
 		summary = self.summary_line_edit.text()
 		descr = self.description_text_edit.toPlainText()
-		notification = self.notification_checkbox.isChecked()
+		notification = self.notification_choice.currentIndex()
 		self._db.save_task(Task(summary, descr, time, notification))
 		self.summary_line_edit.clear()
 		self.description_text_edit.clear()

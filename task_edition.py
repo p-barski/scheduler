@@ -18,7 +18,9 @@ class TaskEditionWidget(TaskFormTemplate):
 
 		self.summary_line_edit.textChanged.connect(self._enforce_task_change)
 		self.description_text_edit.textChanged.connect(self._enforce_task_change)
-		self.notification_checkbox.stateChanged.connect(self._enforce_task_change)
+		self.notification_choice.currentIndexChanged.connect(
+		    self._enforce_task_change
+		)
 		self.time_edit.dateTimeChanged.connect(self._enforce_task_change)
 
 	def set_task(self, task: Task):
@@ -26,7 +28,7 @@ class TaskEditionWidget(TaskFormTemplate):
 		self.summary_line_edit.setText(task.summary)
 		self.description_text_edit.setText(task.description)
 		self.time_edit.setDateTime(self._task.datetime)
-		self.notification_checkbox.setChecked(self._task.notification)
+		self.notification_choice.setCurrentIndex(self._task.notification)
 
 	def _enforce_task_change(self):
 		if self._task is None:
@@ -34,7 +36,7 @@ class TaskEditionWidget(TaskFormTemplate):
 		summary = self.summary_line_edit.text()
 		descr = self.description_text_edit.toPlainText()
 		time = self.time_edit.dateTime().toPyDateTime()
-		notification = self.notification_checkbox.isChecked()
+		notification = self.notification_choice.currentIndex()
 
 		if (summary, descr, time, notification) == (
 		    self._task.summary, self._task.description, self._task.datetime,
@@ -50,7 +52,7 @@ class TaskEditionWidget(TaskFormTemplate):
 		summary = self.summary_line_edit.text()
 		descr = self.description_text_edit.toPlainText()
 		time = self.time_edit.dateTime().toPyDateTime()
-		notification = self.notification_checkbox.isChecked()
+		notification = self.notification_choice.currentIndex()
 		self._task.summary = summary
 		self._task.description = descr
 		self._task.datetime = time

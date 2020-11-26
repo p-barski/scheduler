@@ -4,11 +4,8 @@ from datetime import datetime
 class Task:
 	"""Model of a task saved in database."""
 	def __init__(
-	    self,
-	    summary: str,
-	    description: str,
-	    _datetime: datetime,
-	    notification: bool = False
+	    self, summary: str, description: str, _datetime: datetime,
+	    notification: int
 	):
 		#TODO ORM
 		self.summary = summary
@@ -18,8 +15,8 @@ class Task:
 
 	def __str__(self):
 		string = f"{self.summary} scheduled at {self.datetime}"
-		if self.notification:
-			return f"{string}, with notification"
+		if self.notification is not 0:
+			return f"{string}, with notification at {self.notification}"
 		return string
 
 	def __repr__(self):

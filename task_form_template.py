@@ -1,3 +1,4 @@
+import PyQt5
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from ui_settings import Settings
@@ -32,24 +33,35 @@ class TaskFormTemplate(qtw.QWidget):
 		    text=settings.CONFIRM_BUTTON_TEXT, enabled=False
 		)
 
-		self.notification_checkbox = qtw.QCheckBox(
-		    text=settings.NOTIFICATION_CHECKBOX_TEXT,
-		    layoutDirection=qtc.Qt.RightToLeft,
-		    sizePolicy=qtw.QSizePolicy(
-		        qtw.QSizePolicy.MinimumExpanding, qtw.QSizePolicy.Fixed
-		    )
+		self.notification_choice = qtw.QComboBox(
+		    sizePolicy=qtw.
+		    QSizePolicy(qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Fixed)
 		)
+		#TODO settings
+		items = ["Off"]
+		items.extend([f"{i} min" for i in range(1, 61)])
+		self.notification_choice.addItems(items)
 
 		self.time_edit = qtw.QDateTimeEdit(
 		    dateTime=qtc.QDateTime.currentDateTime().addSecs(60 * 60),
 		    sizePolicy=qtw.QSizePolicy(
-		        qtw.QSizePolicy.Fixed, qtw.QSizePolicy.Fixed
+		        qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Fixed
 		    )
+		)
+
+		#TODO settings
+		notification_label_info = qtw.QLabel(
+		    "Notification",
+		    sizePolicy=qtw.QSizePolicy(
+		        qtw.QSizePolicy.MinimumExpanding, qtw.QSizePolicy.Fixed
+		    ),
+		    alignment=qtc.Qt.AlignRight | qtc.Qt.AlignTrailing | qtc.Qt.AlignVCenter
 		)
 
 		second_layout = qtw.QHBoxLayout()
 		second_layout.addWidget(self.time_edit)
-		second_layout.addWidget(self.notification_checkbox)
+		second_layout.addWidget(notification_label_info)
+		second_layout.addWidget(self.notification_choice)
 
 		button_layout = qtw.QHBoxLayout()
 		button_layout.addWidget(self.cancel_button)
