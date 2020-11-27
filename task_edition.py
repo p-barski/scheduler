@@ -30,6 +30,10 @@ class TaskEditionWidget(TaskFormTemplate):
 		self.time_edit.setDateTime(self._task.datetime)
 		self.notification_choice.setCurrentIndex(self._task.notification)
 
+	def retranslate(self, settings: Settings):
+		super().retranslate(settings)
+		self.confirm_button.setText(settings.SAVE_CHANGES_BUTTON_TEXT)
+
 	def _enforce_task_change(self):
 		if self._task is None:
 			return

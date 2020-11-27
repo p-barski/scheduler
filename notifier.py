@@ -45,6 +45,10 @@ class Notifier:
 		self._cancel_event.set()
 		self._thread.join()
 
+	def retranslate(self, notification_title: str):
+		"""Changes notification title."""
+		self._notification.title = notification_title
+
 	def _notification_loop(self):
 		while not self._cancel_event.is_set():
 			tasks = self._db.get_tasks(datetime.now().date())

@@ -1,30 +1,43 @@
-from typing import Final
-
-
 class Settings:
-	"""Settings for UI elements."""
-	WINDOW_TITLE: Final[str] = "Tasks"
-	WINDOW_WIDTH: Final[int] = 1280
-	WINDOW_HEIGHT: Final[int] = 720
+	"""Settings for UI elements.
+	Supported languages:
+	ENG - English,
+	PL - Polish."""
+	def __init__(self, language: str):
+		self.WINDOW_WIDTH = 1280
+		self.WINDOW_HEIGHT = 720
+		self.SUMMARY_TEXT_MAX_LENGTH = 100
+		self.DESCRIPTION_TEXT_MAX_LENGTH = 200
+		self.TIME_FORMAT = "%H:%M"
+		self.DATE_FORMAT = "%d.%m.%Y"
 
-	CONFIRM_BUTTON_TEXT: Final[str] = "Confirm"
+		if language.upper() == "ENG":
+			self.WINDOW_TITLE = "Tasks"
+			self.CONFIRM_BUTTON_TEXT = "Confirm"
+			self.PREVIOUS_DAY_BUTTON_TEXT = "Previous day"
+			self.NEXT_DAY_BUTTON_TEXT = "Next day"
+			self.CREATE_TASK_BUTTON_TEXT = "Create task"
+			self.CANCEL_BUTTON_TEXT = "Cancel"
+			self.SAVE_CHANGES_BUTTON_TEXT = "Save changes"
+			self.EDIT_TASK_BUTTON_TEXT = "Edit"
+			self.DELETE_TASK_BUTTON_TEXT = "Delete"
 
-	PREVIOUS_DAY_BUTTON_TEXT: Final[str] = "Previous day"
-	NEXT_DAY_BUTTON_TEXT: Final[str] = "Next day"
-	CREATE_TASK_BUTTON_TEXT: Final[str] = "Create task"
+			self.SUMMARY_TEXT = "Summary"
+			self.DESCRIPTION_TEXT = "Description"
+			self.NOTIFICATION_TITLE = "Task reminder"
+		elif language.upper() == "PL":
+			self.WINDOW_TITLE = "Terminarz"
+			self.CONFIRM_BUTTON_TEXT = "Potwierdź"
+			self.PREVIOUS_DAY_BUTTON_TEXT = "Poprzedni dzień"
+			self.NEXT_DAY_BUTTON_TEXT = "Następny dzień"
+			self.CREATE_TASK_BUTTON_TEXT = "Stwórz zadanie"
+			self.CANCEL_BUTTON_TEXT = "Anuluj"
+			self.SAVE_CHANGES_BUTTON_TEXT = "Zapisz zmiany"
+			self.EDIT_TASK_BUTTON_TEXT = "Edytuj"
+			self.DELETE_TASK_BUTTON_TEXT = "Usuń"
 
-	SUMMARY_TEXT: Final[str] = "Summary"
-	SUMMARY_TEXT_MAX_LENGTH: Final[int] = 100
-	DESCRIPTION_TEXT: Final[str] = "Description"
-	DESCRIPTION_TEXT_MAX_LENGTH: Final[int] = 200
-	CANCEL_BUTTON_TEXT: Final[str] = "Cancel"
-	NOTIFICATION_CHECKBOX_TEXT: Final[str] = "Turn on notification"
-
-	SAVE_CHANGES_BUTTON_TEXT: Final[str] = "Save changes"
-	EDIT_TASK_BUTTON_TEXT: Final[str] = "Edit"
-	DELETE_TASK_BUTTON_TEXT: Final[str] = "Delete"
-
-	NOTIFICATION_TITLE: Final[str] = "Task reminder"
-
-	TIME_FORMAT: Final[str] = "%H:%M"
-	DATE_FORMAT: Final[str] = "%d.%m.%Y"
+			self.SUMMARY_TEXT = "Podsumowanie"
+			self.DESCRIPTION_TEXT = "Opis"
+			self.NOTIFICATION_TITLE = "Przypomnienie o zadaniu"
+		else:
+			raise ValueError(f"'{language}' language is not supported.")

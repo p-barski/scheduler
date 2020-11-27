@@ -1,4 +1,3 @@
-import PyQt5
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from ui_settings import Settings
@@ -70,6 +69,13 @@ class TaskFormTemplate(qtw.QWidget):
 		main_layout.addLayout(text_layout)
 		main_layout.addLayout(second_layout)
 		main_layout.addLayout(button_layout)
+
+	def retranslate(self, settings: Settings):
+		self.summary_line_edit.setPlaceholderText(settings.SUMMARY_TEXT)
+		self.description_text_edit.setPlaceholderText(settings.DESCRIPTION_TEXT)
+		self.cancel_button.setText(settings.CANCEL_BUTTON_TEXT)
+		self.confirm_button.setText(settings.CONFIRM_BUTTON_TEXT)
+		#TODO retranslate notification
 
 	def _enforce_summary_not_empty(self):
 		if len(self.summary_line_edit.text()

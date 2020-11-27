@@ -33,27 +33,35 @@ class TaskViewingWidget(qtw.QWidget):
 
 		self._tasks_layout = qtw.QVBoxLayout(tasks_scroll_area_content)
 
-		prev_day_button = qtw.QPushButton(
+		self._prev_day_button = qtw.QPushButton(
 		    text=settings.PREVIOUS_DAY_BUTTON_TEXT,
 		    clicked=lambda: self._change_day(-1)
 		)
 
-		create_task_button = qtw.QPushButton(
+		self._create_task_button = qtw.QPushButton(
 		    text=settings.CREATE_TASK_BUTTON_TEXT, clicked=on_create
 		)
 
-		next_day_button = qtw.QPushButton(
+		self._next_day_button = qtw.QPushButton(
 		    text=settings.NEXT_DAY_BUTTON_TEXT, clicked=lambda: self._change_day(1)
 		)
 
 		buttons_layout = qtw.QHBoxLayout()
-		buttons_layout.addWidget(prev_day_button)
-		buttons_layout.addWidget(create_task_button)
-		buttons_layout.addWidget(next_day_button)
+		buttons_layout.addWidget(self._prev_day_button)
+		buttons_layout.addWidget(self._create_task_button)
+		buttons_layout.addWidget(self._next_day_button)
 
 		main_layout.addWidget(self._date_label)
 		main_layout.addWidget(tasks_scroll_area)
 		main_layout.addLayout(buttons_layout)
+
+	def retranslate(self, settings: Settings):
+		self._settings = settings
+		self._prev_day_button.setText(settings.PREVIOUS_DAY_BUTTON_TEXT)
+		self._create_task_button.setText(settings.CREATE_TASK_BUTTON_TEXT)
+		self._next_day_button.setText(settings.NEXT_DAY_BUTTON_TEXT)
+		self._factory.settings = settings
+		self._redraw_tasks()
 
 	def showEvent(self, event):
 		"""Overridden method, called upon self.show()."""

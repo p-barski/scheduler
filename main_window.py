@@ -16,7 +16,7 @@ class MainWindow(qtw.QWidget):
 
 	def __init__(self):
 		super().__init__()
-		self.settings = Settings()
+		self.settings = Settings("ENG")
 		self.db = DB()
 		self.notifier = Notifier(self.db, self.settings.NOTIFICATION_TITLE)
 		self.notifier.start()
@@ -57,6 +57,16 @@ class MainWindow(qtw.QWidget):
 		qtRectangle.moveCenter(centerPoint)
 		self.move(qtRectangle.topLeft())
 
+	def retranslate(self, settings: Settings):
+		self.task_edition.retranslate(settings)
+		self.task_creation.retranslate(settings)
+		self.task_viewing.retranslate(settings)
+		self.notifier.retranslate(settings.NOTIFICATION_TITLE)
+
+	def closeEvent(self, event):
+		"""Overridden method, called when closing widget."""
+		self.notifier.stop()
+
 	def _switch_to_task_creation(self):
 		self.task_viewing.hide()
 		self.task_edition.hide()
@@ -76,10 +86,6 @@ class MainWindow(qtw.QWidget):
 	def _delete_task(self, task: Task):
 		self.db.delete_task(task)
 		self.task_deleted_event.emit()
-
-	def closeEvent(self, event):
-		"""Overridden method, called when closing widget."""
-		self.notifier.stop()
 
 
 if __name__ == "__main__":
