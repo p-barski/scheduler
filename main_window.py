@@ -10,7 +10,7 @@ from notifier import Notifier
 from database import DB
 
 
-class MainWindow(qtw.QWidget):
+class MainWindow(qtw.QMainWindow):
 	"""Main window of an application."""
 	task_deleted_event = qtc.pyqtSignal()
 
@@ -25,9 +25,12 @@ class MainWindow(qtw.QWidget):
 		)
 
 		self.setWindowTitle(self.settings.WINDOW_TITLE)
-		main_layout = qtw.QVBoxLayout()
-		self.setLayout(main_layout)
 		self.resize(self.settings.WINDOW_WIDTH, self.settings.WINDOW_HEIGHT)
+
+		main_widget = qtw.QWidget()
+		main_layout = qtw.QVBoxLayout()
+		main_widget.setLayout(main_layout)
+		self.setCentralWidget(main_widget)
 
 		self.task_viewing = TaskViewingWidget(
 		    self.settings, self.db, self._switch_to_task_creation,
