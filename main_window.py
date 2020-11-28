@@ -60,11 +60,25 @@ class MainWindow(qtw.QMainWindow):
 		qtRectangle.moveCenter(centerPoint)
 		self.move(qtRectangle.topLeft())
 
-	def retranslate(self, settings: Settings):
-		self.task_edition.retranslate(settings)
-		self.task_creation.retranslate(settings)
-		self.task_viewing.retranslate(settings)
-		self.notifier.retranslate(settings.NOTIFICATION_TITLE)
+		#Menu bar
+		#TODO action names should be from settings
+		#TODO retranslate menu bar
+		change_to_pl = qtw.QAction("Language - PL", self)
+		change_to_pl.triggered.connect(lambda: self.retranslate("PL"))
+		change_to_eng = qtw.QAction("Language - ENG", self)
+		change_to_eng.triggered.connect(lambda: self.retranslate("ENG"))
+
+		menu_bar = self.menuBar()
+		options_menu = menu_bar.addMenu("Options")
+		options_menu.addAction(change_to_pl)
+		options_menu.addAction(change_to_eng)
+
+	def retranslate(self, language: str):
+		self.settings = Settings(language)
+		self.task_edition.retranslate(self.settings)
+		self.task_creation.retranslate(self.settings)
+		self.task_viewing.retranslate(self.settings)
+		self.notifier.retranslate(self.settings.NOTIFICATION_TITLE)
 
 	def closeEvent(self, event):
 		"""Overridden method, called when closing widget."""
