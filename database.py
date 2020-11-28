@@ -2,9 +2,11 @@ from datetime import date, timedelta
 from typing import Tuple
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from preferences import Preferences
 from task import Task
 
 
+#pylint: disable=no-member
 class DB:
 	"""Access to database."""
 	def __init__(self):
@@ -15,6 +17,7 @@ class DB:
 		)
 		self._session = sessionmaker(bind=self._engine)()
 		Task.__table__.create(bind=self._engine, checkfirst=True)
+		Preferences.__table__.create(bind=self._engine, checkfirst=True)
 
 	def get_tasks(self, date_filter: date) -> Tuple[Task, ...]:
 		"""Returns tuple of tasks from given day."""
@@ -31,4 +34,18 @@ class DB:
 	def delete_task(self, task: Task):
 		"""Deletes task from database."""
 		self._session.delete(task)
+		self._session.commit()
+
+	def get_preferences(self) -> Preferences:
+		"""Returns user's preferences saved in database or,
+		if there is none, default preferences."""
+		query = self._session.query(Preferences)
+		try:
+			return query.all()[0]
+		except IndexError:
+			return Preferences()
+
+	def save_preferences(self, preferences: Preferences):
+		preferences.default_preferences = False
+		self._session.add(preferences)
 		self._session.commit()

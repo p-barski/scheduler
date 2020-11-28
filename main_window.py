@@ -16,16 +16,15 @@ class MainWindow(qtw.QMainWindow):
 
 	def __init__(self):
 		super().__init__()
-		self.settings = Settings("ENG")
 		self.db = DB()
+		self.preferences = self.db.get_preferences()
+		self.settings = Settings(self.preferences.language)
+
 		self.notifier = Notifier(self.db, self.settings.NOTIFICATION_TITLE)
 		self.notifier.start()
 		self.factory = TaskWidgetFactory(
 		    self.settings, self._switch_to_task_editing, self._delete_task
 		)
-
-		self.setWindowTitle(self.settings.WINDOW_TITLE)
-		self.resize(self.settings.WINDOW_WIDTH, self.settings.WINDOW_HEIGHT)
 
 		main_widget = qtw.QWidget()
 		main_layout = qtw.QVBoxLayout()
@@ -44,21 +43,10 @@ class MainWindow(qtw.QMainWindow):
 		self.task_edition = TaskEditionWidget(
 		    self.settings, self.db, self._switch_to_task_viewing
 		)
-		self.task_edition.cancel_button.clicked.connect(
-		    self._switch_to_task_viewing
-		)
 
 		main_layout.addWidget(self.task_viewing)
 		main_layout.addWidget(self.task_creation)
 		main_layout.addWidget(self.task_edition)
-
-		self._switch_to_task_viewing()
-
-		#Centering window
-		qtRectangle = self.frameGeometry()
-		centerPoint = qtw.QDesktopWidget().availableGeometry().center()
-		qtRectangle.moveCenter(centerPoint)
-		self.move(qtRectangle.topLeft())
 
 		#Menu bar
 		#TODO action names should be from settings
@@ -73,8 +61,21 @@ class MainWindow(qtw.QMainWindow):
 		options_menu.addAction(change_to_pl)
 		options_menu.addAction(change_to_eng)
 
+		self.setWindowTitle(self.settings.WINDOW_TITLE)
+
+		self.resize(self.preferences.width, self.preferences.height)
+		if self.preferences.default_preferences:
+			self._center_window()
+		elif self.preferences.maximised:
+			self.showMaximized()
+		else:
+			self.move(self.preferences.x_offset, self.preferences.y_offset)
+
+		self._switch_to_task_viewing()
+
 	def retranslate(self, language: str):
 		self.settings = Settings(language)
+		self.preferences.language = language
 		self.task_edition.retranslate(self.settings)
 		self.task_creation.retranslate(self.settings)
 		self.task_viewing.retranslate(self.settings)
@@ -82,7 +83,14 @@ class MainWindow(qtw.QMainWindow):
 
 	def closeEvent(self, event):
 		"""Overridden method, called when closing widget."""
+		self.db.save_preferences(self.preferences)
 		self.notifier.stop()
+
+	def resizeEvent(self, event):
+		self._update_preferences()
+
+	def moveEvent(self, event):
+		self._update_preferences()
 
 	def _switch_to_task_creation(self):
 		self.task_viewing.hide()
@@ -103,6 +111,21 @@ class MainWindow(qtw.QMainWindow):
 	def _delete_task(self, task: Task):
 		self.db.delete_task(task)
 		self.task_deleted_event.emit()
+
+	def _center_window(self):
+		qtRectangle = self.frameGeometry()
+		centerPoint = qtw.QDesktopWidget().availableGeometry().center()
+		qtRectangle.moveCenter(centerPoint)
+		self.move(qtRectangle.topLeft())
+		self._update_preferences()
+
+	def _update_preferences(self):
+		geometry = self.frameGeometry()
+		self.preferences.x_offset = geometry.left()
+		self.preferences.y_offset = geometry.top()
+		self.preferences.width = geometry.width()
+		self.preferences.height = geometry.height()
+		self.preferences.maximised = self.isMaximized()
 
 
 if __name__ == "__main__":
