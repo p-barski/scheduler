@@ -20,7 +20,7 @@ class TaskWidget(qtw.QWidget):
 
 		summary_label = qtw.QLabel(task.summary)
 		description_label = qtw.QLabel(task.description)
-		date_label = qtw.QLabel(task.datetime.strftime(settings.TIME_FORMAT))
+		date_label = qtw.QLabel(task.scheduled_date.strftime(settings.TIME_FORMAT))
 		notification_label = qtw.QLabel(str(task.notification))
 
 		edit_button = qtw.QPushButton(

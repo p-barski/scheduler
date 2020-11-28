@@ -5,7 +5,7 @@ from collections import namedtuple
 from random import randint
 from notifier import TaskFilter
 
-Task = namedtuple("Task", ("datetime", "notification"))
+Task = namedtuple("Task", ("scheduled_date", "notification"))
 
 
 class TaskFilterTests(TestCase):
@@ -56,10 +56,11 @@ class TaskFilterTests(TestCase):
 			sleep_time = randint(3, 59)
 			notification_time = randint(1, 120)
 			filter_obj = TaskFilter(sleep_time)
-			offset = -randint(0, 2000)
+			offset = -randint(int(sleep_time * 1.5), 2000)
 
 			task = Task(datetime.now() + timedelta(seconds=offset), notification_time)
-			self.assertFalse(filter_obj(task))
+			ret = filter_obj(task)
+			self.assertFalse(ret)
 
 	def test_notification_4(self):
 		for _ in range(5000):

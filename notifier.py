@@ -13,7 +13,7 @@ class TaskFilter:
 	def __call__(self, task) -> bool:
 		if task.notification == 0:
 			return False
-		time_diff = task.datetime - datetime.now()
+		time_diff = task.scheduled_date - datetime.now()
 		upper_bound = timedelta(seconds=60 * task.notification)
 		lower_bound = timedelta(
 		    seconds=60 * task.notification - self.sleep_time * 1.5
@@ -23,7 +23,7 @@ class TaskFilter:
 
 class Notifier:
 	"""Checks tasks in database and sends notification when needed."""
-	SLEEP_TIME: Final[int] = 20
+	SLEEP_TIME: Final[int] = 10
 
 	def __init__(self, db: DB, notification_title: str):
 		self._db = db

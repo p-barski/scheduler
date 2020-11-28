@@ -2,3 +2,8 @@ __pycache__
 .mypy_cache
 .vscode
 env
+*.pdf
+*.png
+*.db
+dist
+build

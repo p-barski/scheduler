@@ -27,7 +27,7 @@ class TaskEditionWidget(TaskFormTemplate):
 		self._task = task
 		self.summary_line_edit.setText(task.summary)
 		self.description_text_edit.setText(task.description)
-		self.time_edit.setDateTime(self._task.datetime)
+		self.time_edit.setDateTime(self._task.scheduled_date)
 		self.notification_choice.setCurrentIndex(self._task.notification)
 
 	def retranslate(self, settings: Settings):
@@ -43,7 +43,7 @@ class TaskEditionWidget(TaskFormTemplate):
 		notification = self.notification_choice.currentIndex()
 
 		if (summary, descr, time, notification) == (
-		    self._task.summary, self._task.description, self._task.datetime,
+		    self._task.summary, self._task.description, self._task.scheduled_date,
 		    self._task.notification
 		):
 			self.confirm_button.setEnabled(False)
@@ -59,6 +59,6 @@ class TaskEditionWidget(TaskFormTemplate):
 		notification = self.notification_choice.currentIndex()
 		self._task.summary = summary
 		self._task.description = descr
-		self._task.datetime = time
+		self._task.scheduled_date = time
 		self._task.notification = notification
 		self._db.save_task(self._task)
