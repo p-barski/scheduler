@@ -4,8 +4,6 @@ class Settings:
 	ENG - English,
 	PL - Polish."""
 	def __init__(self, language: str):
-		self.WINDOW_WIDTH = 1280
-		self.WINDOW_HEIGHT = 720
 		self.SUMMARY_TEXT_MAX_LENGTH = 100
 		self.DESCRIPTION_TEXT_MAX_LENGTH = 200
 		self.TIME_FORMAT = "%H:%M"
