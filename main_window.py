@@ -20,8 +20,14 @@ class MainWindow(qtw.QMainWindow):
 		self.preferences = self.db.get_preferences()
 		self.settings = Settings(self.preferences.language)
 
-		self.notifier = Notifier(self.db, self.settings.NOTIFICATION_TITLE)
-		self.notifier.start()
+		try:
+			self.notifier = Notifier(self.db, self.settings.NOTIFICATION_TITLE)
+			self.notifier.start()
+		except BaseException as e:
+			popup_window = qtw.QMessageBox(
+			    windowTitle="Notification error", text=str(e)
+			)
+			popup_window.exec_()
 		self.factory = TaskWidgetFactory(
 		    self.settings, self._switch_to_task_editing, self._delete_task
 		)
@@ -79,12 +85,18 @@ class MainWindow(qtw.QMainWindow):
 		self.task_edition.retranslate(self.settings)
 		self.task_creation.retranslate(self.settings)
 		self.task_viewing.retranslate(self.settings)
-		self.notifier.retranslate(self.settings.NOTIFICATION_TITLE)
+		try:
+			self.notifier.retranslate(self.settings.NOTIFICATION_TITLE)
+		except AttributeError:
+			pass
 
 	def closeEvent(self, event):
 		"""Overridden method, called when closing widget."""
 		self.db.save_preferences(self.preferences)
-		self.notifier.stop()
+		try:
+			self.notifier.stop()
+		except AttributeError:
+			pass
 
 	def resizeEvent(self, event):
 		self._update_preferences()

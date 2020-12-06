@@ -38,12 +38,14 @@ class Notifier:
 
 	def start(self):
 		"""Starts notifying thread."""
+		self._cancel_event.clear()
 		self._thread.start()
 
 	def stop(self):
 		"""Stops notifying thread."""
 		self._cancel_event.set()
-		self._thread.join()
+		if self._thread.is_alive():
+			self._thread.join()
 
 	def retranslate(self, notification_title: str):
 		"""Changes notification title."""
