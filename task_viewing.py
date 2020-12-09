@@ -83,5 +83,8 @@ class TaskViewingWidget(qtw.QWidget):
 		for i in range(self._tasks_layout.count()):
 			self._tasks_layout.itemAt(i).widget().close()
 
-		for t in self._db.get_tasks(self._current_date):
+		for t in sorted(
+		    self._db.get_tasks(self._current_date),
+		    key=lambda task: task.scheduled_date
+		):
 			self._tasks_layout.addWidget(self._factory.create(t))
