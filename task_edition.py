@@ -10,6 +10,7 @@ class TaskEditionWidget(TaskFormTemplate):
 	def __init__(self, settings: Settings, db: DB, on_cancel: Callable):
 		super().__init__(settings)
 		self._db = db
+		self._on_cancel = on_cancel
 
 		self.cancel_button.clicked.connect(on_cancel)
 		self.confirm_button.setText(settings.SAVE_CHANGES_BUTTON_TEXT)
@@ -62,3 +63,4 @@ class TaskEditionWidget(TaskFormTemplate):
 		self._task.scheduled_date = time
 		self._task.notification = notification
 		self._db.save_task(self._task)
+		self._on_cancel()
