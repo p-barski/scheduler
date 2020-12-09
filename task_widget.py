@@ -1,5 +1,6 @@
 from typing import Callable, Final
 from PyQt5 import QtWidgets as qtw
+from PyQt5 import QtCore as qtc
 from ui_settings import Settings
 from task import Task
 
@@ -27,7 +28,8 @@ class TaskWidget(qtw.QWidget):
 		    text=settings.EDIT_TASK_BUTTON_TEXT, clicked=lambda: on_edit(task)
 		)
 		delete_button = qtw.QPushButton(
-		    text=settings.DELETE_TASK_BUTTON_TEXT, clicked=lambda: on_delete(task)
+		    text=settings.DELETE_TASK_BUTTON_TEXT,
+		    clicked=lambda: self._on_delete(settings, on_delete)
 		)
 
 		task_details_layout.addWidget(summary_label)
@@ -41,7 +43,21 @@ class TaskWidget(qtw.QWidget):
 		self.setMaximumHeight(200)
 
 		#TODO better button sizes
-		#TODO ask before deleting
+
+	def _on_delete(self, settings: Settings, on_delete: Callable[[Task], None]):
+		popup = qtw.QMessageBox(
+		    windowTitle=settings.ON_DELETE_POPUP_TITLE,
+		    text=settings.ON_DELETE_POPUP_QUESTION,
+		    standardButtons=qtw.QMessageBox.Yes | qtw.QMessageBox.No
+		)
+		yes_button = popup.button(qtw.QMessageBox.Yes)
+		yes_button.setText(settings.YES_BUTTON_TEXT)
+		no_button = popup.button(qtw.QMessageBox.No)
+		no_button.setText(settings.NO_BUTTON_TEXT)
+		no_button.setFocus()
+		popup.exec_()
+		if popup.clickedButton() == yes_button:
+			on_delete(self.task)
 
 
 class TaskWidgetFactory:

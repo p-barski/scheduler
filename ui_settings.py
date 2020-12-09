@@ -23,6 +23,11 @@ class Settings:
 			self.SUMMARY_TEXT = "Summary"
 			self.DESCRIPTION_TEXT = "Description"
 			self.NOTIFICATION_TITLE = "Task reminder"
+
+			self.YES_BUTTON_TEXT = "Yes"
+			self.NO_BUTTON_TEXT = "No"
+			self.ON_DELETE_POPUP_TITLE = "Delete confirmation"
+			self.ON_DELETE_POPUP_QUESTION = "Are you sure?"
 		elif language.upper() == "PL":
 			self.WINDOW_TITLE = "Terminarz"
 			self.CONFIRM_BUTTON_TEXT = "Potwierdź"
@@ -37,5 +42,10 @@ class Settings:
 			self.SUMMARY_TEXT = "Podsumowanie"
 			self.DESCRIPTION_TEXT = "Opis"
 			self.NOTIFICATION_TITLE = "Przypomnienie o zadaniu"
+
+			self.YES_BUTTON_TEXT = "Tak"
+			self.NO_BUTTON_TEXT = "Nie"
+			self.ON_DELETE_POPUP_TITLE = "Potwierdzenie usunięcia"
+			self.ON_DELETE_POPUP_QUESTION = "Na pewno usunąć?"
 		else:
 			raise ValueError(f"'{language}' language is not supported.")
