@@ -55,17 +55,19 @@ class MainWindow(qtw.QMainWindow):
 		main_layout.addWidget(self.task_edition)
 
 		#Menu bar
-		#TODO action names should be from settings
-		#TODO retranslate menu bar
-		change_to_pl = qtw.QAction("Language - PL", self)
-		change_to_pl.triggered.connect(lambda: self.retranslate("PL"))
-		change_to_eng = qtw.QAction("Language - ENG", self)
-		change_to_eng.triggered.connect(lambda: self.retranslate("ENG"))
+		self._change_to_pl = qtw.QAction(
+		    f"{self.settings.LANGUAGE_TEXT} - PL", self
+		)
+		self._change_to_pl.triggered.connect(lambda: self.retranslate("PL"))
+		self._change_to_eng = qtw.QAction(
+		    f"{self.settings.LANGUAGE_TEXT} - ENG", self
+		)
+		self._change_to_eng.triggered.connect(lambda: self.retranslate("ENG"))
 
 		menu_bar = self.menuBar()
-		options_menu = menu_bar.addMenu("Options")
-		options_menu.addAction(change_to_pl)
-		options_menu.addAction(change_to_eng)
+		self._options_menu = menu_bar.addMenu(self.settings.MENU_OPTIONS)
+		self._options_menu.addAction(self._change_to_pl)
+		self._options_menu.addAction(self._change_to_eng)
 
 		self.setWindowTitle(self.settings.WINDOW_TITLE)
 
@@ -85,6 +87,9 @@ class MainWindow(qtw.QMainWindow):
 		self.task_edition.retranslate(self.settings)
 		self.task_creation.retranslate(self.settings)
 		self.task_viewing.retranslate(self.settings)
+		self._options_menu.setTitle(self.settings.MENU_OPTIONS)
+		self._change_to_pl.setText(f"{self.settings.LANGUAGE_TEXT} - PL")
+		self._change_to_eng.setText(f"{self.settings.LANGUAGE_TEXT} - ENG")
 		try:
 			self.notifier.retranslate(self.settings.NOTIFICATION_TITLE)
 		except AttributeError:

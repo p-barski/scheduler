@@ -31,6 +31,9 @@ class Settings:
 
 			self.notification_description = lambda x: "Notification off" if x == 0 else f"Notification: {x} min before"
 			self.TASK_WIDGET_TOOLTIP = "Click to show/hide description"
+
+			self.LANGUAGE_TEXT = "Language"
+			self.MENU_OPTIONS = "Options"
 		elif language.upper() == "PL":
 			self.WINDOW_TITLE = "Terminarz"
 			self.CONFIRM_BUTTON_TEXT = "Potwierdź"
@@ -53,5 +56,8 @@ class Settings:
 
 			self.notification_description = lambda x: "Powiadomienie wył." if x == 0 else f"Powiadomienie: {x} min. przed"
 			self.TASK_WIDGET_TOOLTIP = "Kliknij by pokazać/schować opis"
+
+			self.LANGUAGE_TEXT = "Język"
+			self.MENU_OPTIONS = "Opcje"
 		else:
 			raise ValueError(f"'{language}' language is not supported.")
