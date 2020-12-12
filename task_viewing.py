@@ -32,6 +32,7 @@ class TaskViewingWidget(qtw.QWidget):
 		tasks_scroll_area.setWidget(tasks_scroll_area_content)
 
 		self._tasks_layout = qtw.QVBoxLayout(tasks_scroll_area_content)
+		self._tasks_layout.setAlignment(qtc.Qt.AlignTop)
 
 		self._prev_day_button = qtw.QPushButton(
 		    text=settings.PREVIOUS_DAY_BUTTON_TEXT,
