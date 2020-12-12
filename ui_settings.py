@@ -15,7 +15,7 @@ class Settings:
 			self.PREVIOUS_DAY_BUTTON_TEXT = "Previous day"
 			self.NEXT_DAY_BUTTON_TEXT = "Next day"
 			self.CREATE_TASK_BUTTON_TEXT = "Create task"
-			self.CANCEL_BUTTON_TEXT = "Cancel"
+			self.CANCEL_BUTTON_TEXT = "Return"
 			self.SAVE_CHANGES_BUTTON_TEXT = "Save changes"
 			self.EDIT_TASK_BUTTON_TEXT = "Edit"
 			self.DELETE_TASK_BUTTON_TEXT = "Delete"
@@ -34,13 +34,17 @@ class Settings:
 
 			self.LANGUAGE_TEXT = "Language"
 			self.MENU_OPTIONS = "Options"
+
+			self.NOTIFICATION = "Notification"
+			self.NOTIFICATION_OFF = "Off"
+			self.MINUTE_ABBREVIATION = "min"
 		elif language.upper() == "PL":
 			self.WINDOW_TITLE = "Terminarz"
 			self.CONFIRM_BUTTON_TEXT = "Potwierdź"
 			self.PREVIOUS_DAY_BUTTON_TEXT = "Poprzedni dzień"
 			self.NEXT_DAY_BUTTON_TEXT = "Następny dzień"
 			self.CREATE_TASK_BUTTON_TEXT = "Stwórz zadanie"
-			self.CANCEL_BUTTON_TEXT = "Anuluj"
+			self.CANCEL_BUTTON_TEXT = "Powrót"
 			self.SAVE_CHANGES_BUTTON_TEXT = "Zapisz zmiany"
 			self.EDIT_TASK_BUTTON_TEXT = "Edytuj"
 			self.DELETE_TASK_BUTTON_TEXT = "Usuń"
@@ -59,5 +63,9 @@ class Settings:
 
 			self.LANGUAGE_TEXT = "Język"
 			self.MENU_OPTIONS = "Opcje"
+
+			self.NOTIFICATION = "Powiadomienie"
+			self.NOTIFICATION_OFF = "Wył"
+			self.MINUTE_ABBREVIATION = "min."
 		else:
 			raise ValueError(f"'{language}' language is not supported.")

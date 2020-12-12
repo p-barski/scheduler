@@ -15,7 +15,7 @@ class TaskEditionWidget(TaskFormTemplate):
 		self.cancel_button.clicked.connect(on_cancel)
 		self.confirm_button.setText(settings.SAVE_CHANGES_BUTTON_TEXT)
 		self.confirm_button.clicked.connect(self._on_edit)
-		self._task: Optional[Task]
+		self._task: Optional[Task] = None
 
 		self.summary_line_edit.textChanged.connect(self._enforce_task_change)
 		self.description_text_edit.textChanged.connect(self._enforce_task_change)

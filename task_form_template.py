@@ -36,21 +36,18 @@ class TaskFormTemplate(qtw.QWidget):
 		    sizePolicy=qtw.
 		    QSizePolicy(qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Fixed)
 		)
-		#TODO settings
-		items = ["Off"]
-		items.extend([f"{i} min" for i in range(1, 61)])
-		self.notification_choice.addItems(items)
+
+		self._add_items_to_notification_combobox(settings)
 
 		self.time_edit = qtw.QDateTimeEdit(
-		    dateTime=qtc.QDateTime.currentDateTime().addSecs(60 * 60),
+		    dateTime=self._get_default_datetime(),
 		    sizePolicy=qtw.QSizePolicy(
 		        qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Fixed
 		    )
 		)
 
-		#TODO settings
 		notification_label_info = qtw.QLabel(
-		    "Notification",
+		    text=settings.NOTIFICATION,
 		    sizePolicy=qtw.QSizePolicy(
 		        qtw.QSizePolicy.MinimumExpanding, qtw.QSizePolicy.Fixed
 		    ),
@@ -75,7 +72,11 @@ class TaskFormTemplate(qtw.QWidget):
 		self.description_text_edit.setPlaceholderText(settings.DESCRIPTION_TEXT)
 		self.cancel_button.setText(settings.CANCEL_BUTTON_TEXT)
 		self.confirm_button.setText(settings.CONFIRM_BUTTON_TEXT)
-		#TODO retranslate notification
+
+		index_before = self.notification_choice.currentIndex()
+		self.notification_choice.clear()
+		self._add_items_to_notification_combobox(settings)
+		self.notification_choice.setCurrentIndex(index_before)
 
 	def _enforce_summary_not_empty(self):
 		if len(self.summary_line_edit.text()
@@ -93,3 +94,12 @@ class TaskFormTemplate(qtw.QWidget):
 			cursor = self.description_text_edit.textCursor()
 			cursor.setPosition(max_length)
 			self.description_text_edit.setTextCursor(cursor)
+
+	def _add_items_to_notification_combobox(self, settings: Settings):
+		items = [settings.NOTIFICATION_OFF]
+		items.extend([f"{i} {settings.MINUTE_ABBREVIATION}" for i in range(1, 61)])
+		self.notification_choice.addItems(items)
+
+	def _get_default_datetime(self) -> qtc.QDateTime:
+		dt = qtc.QDateTime.currentDateTime().addSecs(60 * 60)
+		return dt.addSecs(-dt.time().second()).addMSecs(-dt.time().msec())

@@ -20,6 +20,9 @@ class TaskCreationWidget(TaskFormTemplate):
 		super().retranslate(settings)
 		self.confirm_button.setText(settings.CREATE_TASK_BUTTON_TEXT)
 
+	def showEvent(self, event):
+		self.time_edit.setDateTime(self._get_default_datetime())
+
 	def _on_create(self):
 		"""Creates task."""
 		time = self.time_edit.dateTime().toPyDateTime()
@@ -29,3 +32,4 @@ class TaskCreationWidget(TaskFormTemplate):
 		self._db.save_task(Task(summary, descr, time, notification))
 		self.summary_line_edit.clear()
 		self.description_text_edit.clear()
+		self.notification_choice.setCurrentIndex(0)
