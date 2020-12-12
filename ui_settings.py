@@ -28,6 +28,9 @@ class Settings:
 			self.NO_BUTTON_TEXT = "No"
 			self.ON_DELETE_POPUP_TITLE = "Delete confirmation"
 			self.ON_DELETE_POPUP_QUESTION = "Are you sure?"
+
+			self.notification_description = lambda x: "Notification off" if x == 0 else f"Notification: {x} min before"
+			self.TASK_WIDGET_TOOLTIP = "Click to show/hide description"
 		elif language.upper() == "PL":
 			self.WINDOW_TITLE = "Terminarz"
 			self.CONFIRM_BUTTON_TEXT = "Potwierdź"
@@ -47,5 +50,8 @@ class Settings:
 			self.NO_BUTTON_TEXT = "Nie"
 			self.ON_DELETE_POPUP_TITLE = "Potwierdzenie usunięcia"
 			self.ON_DELETE_POPUP_QUESTION = "Na pewno usunąć?"
+
+			self.notification_description = lambda x: "Powiadomienie wył." if x == 0 else f"Powiadomienie: {x} min. przed"
+			self.TASK_WIDGET_TOOLTIP = "Kliknij by pokazać/schować opis"
 		else:
 			raise ValueError(f"'{language}' language is not supported.")
