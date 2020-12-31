@@ -46,7 +46,7 @@ class TaskFormTemplate(qtw.QWidget):
 		    )
 		)
 
-		notification_label_info = qtw.QLabel(
+		self.notification_label_info = qtw.QLabel(
 		    text=settings.NOTIFICATION,
 		    sizePolicy=qtw.QSizePolicy(
 		        qtw.QSizePolicy.MinimumExpanding, qtw.QSizePolicy.Fixed
@@ -56,7 +56,7 @@ class TaskFormTemplate(qtw.QWidget):
 
 		second_layout = qtw.QHBoxLayout()
 		second_layout.addWidget(self.time_edit)
-		second_layout.addWidget(notification_label_info)
+		second_layout.addWidget(self.notification_label_info)
 		second_layout.addWidget(self.notification_choice)
 
 		button_layout = qtw.QHBoxLayout()
@@ -72,6 +72,7 @@ class TaskFormTemplate(qtw.QWidget):
 		self.description_text_edit.setPlaceholderText(settings.DESCRIPTION_TEXT)
 		self.cancel_button.setText(settings.CANCEL_BUTTON_TEXT)
 		self.confirm_button.setText(settings.CONFIRM_BUTTON_TEXT)
+		self.notification_label_info.setText(settings.NOTIFICATION)
 
 		index_before = self.notification_choice.currentIndex()
 		self.notification_choice.clear()
