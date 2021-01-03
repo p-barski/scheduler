@@ -2,6 +2,8 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from task import Task
 from task_widget import TaskWidgetFactory
+from day_widget import DayWidgetFactory
+from monthly_view import MonthlyViewWidget
 from task_viewing import TaskViewingWidget
 from task_creation import TaskCreationWidget
 from task_edition import TaskEditionWidget
@@ -31,6 +33,7 @@ class MainWindow(qtw.QMainWindow):
 		self.factory = TaskWidgetFactory(
 		    self.settings, self._switch_to_task_editing, self._delete_task
 		)
+		self.day_factory = DayWidgetFactory(self.db, self._pick_day)
 
 		main_widget = qtw.QWidget()
 		main_layout = qtw.QVBoxLayout()
@@ -39,8 +42,9 @@ class MainWindow(qtw.QMainWindow):
 
 		self.task_viewing = TaskViewingWidget(
 		    self.settings, self.db, self._switch_to_task_creation,
-		    self.task_deleted_event, self.factory
+		    self._switch_to_monthly_view, self.task_deleted_event, self.factory
 		)
+		self.monthly_view = MonthlyViewWidget(self.settings, self.day_factory)
 
 		self.task_creation = TaskCreationWidget(
 		    self.settings, self.db, self._switch_to_task_viewing
@@ -51,6 +55,7 @@ class MainWindow(qtw.QMainWindow):
 		)
 
 		main_layout.addWidget(self.task_viewing)
+		main_layout.addWidget(self.monthly_view)
 		main_layout.addWidget(self.task_creation)
 		main_layout.addWidget(self.task_edition)
 
@@ -87,6 +92,7 @@ class MainWindow(qtw.QMainWindow):
 		self.task_edition.retranslate(self.settings)
 		self.task_creation.retranslate(self.settings)
 		self.task_viewing.retranslate(self.settings)
+		self.monthly_view.retranslate(self.settings)
 		self._options_menu.setTitle(self.settings.MENU_OPTIONS)
 		self._change_to_pl.setText(f"{self.settings.LANGUAGE_TEXT} - PL")
 		self._change_to_eng.setText(f"{self.settings.LANGUAGE_TEXT} - ENG")
@@ -112,18 +118,31 @@ class MainWindow(qtw.QMainWindow):
 	def _switch_to_task_creation(self):
 		self.task_viewing.hide()
 		self.task_edition.hide()
+		self.monthly_view.hide()
 		self.task_creation.show()
 
 	def _switch_to_task_viewing(self):
 		self.task_creation.hide()
 		self.task_edition.hide()
+		self.monthly_view.hide()
 		self.task_viewing.show()
 
 	def _switch_to_task_editing(self, task: Task):
 		self.task_creation.hide()
 		self.task_viewing.hide()
+		self.monthly_view.hide()
 		self.task_edition.set_task(task)
 		self.task_edition.show()
+
+	def _switch_to_monthly_view(self):
+		self.task_creation.hide()
+		self.task_edition.hide()
+		self.task_viewing.hide()
+		self.monthly_view.show()
+
+	def _pick_day(self, day):
+		self.task_viewing.change_day(day)
+		self._switch_to_task_viewing()
 
 	def _delete_task(self, task: Task):
 		self.db.delete_task(task)

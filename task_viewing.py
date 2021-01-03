@@ -11,7 +11,8 @@ class TaskViewingWidget(qtw.QWidget):
 	"""Displays all the tasks."""
 	def __init__(
 	    self, settings: Settings, db: DB, on_create: Callable,
-	    tasks_changed_event: qtc.pyqtSignal, factory: TaskWidgetFactory
+	    on_date_click: Callable, tasks_changed_event: qtc.pyqtSignal,
+	    factory: TaskWidgetFactory
 	):
 		super().__init__()
 		tasks_changed_event.connect(self._redraw_tasks)
@@ -24,7 +25,10 @@ class TaskViewingWidget(qtw.QWidget):
 		self.setLayout(main_layout)
 
 		self._current_date = date.today()
-		self._date_label = qtw.QLabel()
+		self._date_button = qtw.QPushButton(clicked=on_date_click)
+		font = self._date_button.font()
+		font.setPixelSize(20)
+		self._date_button.setFont(font)
 		self._update_date_label()
 
 		tasks_scroll_area = qtw.QScrollArea(widgetResizable=True)
@@ -52,9 +56,13 @@ class TaskViewingWidget(qtw.QWidget):
 		buttons_layout.addWidget(self._create_task_button)
 		buttons_layout.addWidget(self._next_day_button)
 
-		main_layout.addWidget(self._date_label)
+		main_layout.addWidget(self._date_button)
 		main_layout.addWidget(tasks_scroll_area)
 		main_layout.addLayout(buttons_layout)
+
+	def change_day(self, day: date):
+		self._current_date = day
+		self._change_day(0)
 
 	def retranslate(self, settings: Settings):
 		self._settings = settings
@@ -74,7 +82,7 @@ class TaskViewingWidget(qtw.QWidget):
 		self._redraw_tasks()
 
 	def _update_date_label(self):
-		self._date_label.setText(
+		self._date_button.setText(
 		    self._current_date.strftime(self._settings.DATE_FORMAT)
 		)
 
