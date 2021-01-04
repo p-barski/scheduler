@@ -1,7 +1,9 @@
 from datetime import date, timedelta
+from time import sleep
 from typing import Tuple
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import InvalidRequestError
 from preferences import Preferences
 from task import Task
 
@@ -24,7 +26,13 @@ class DB:
 		query = self._session.query(Task).filter(
 		    Task.scheduled_date >= date_filter
 		).filter(Task.scheduled_date <= date_filter + timedelta(days=1))
-		return query.all()
+		while True:
+			#This fixes exception when db is commiting changes
+			#and another thread tries to access it
+			try:
+				return query.all()
+			except InvalidRequestError:
+				sleep(0.1)
 
 	def save_task(self, task: Task):
 		"""Saves task in database."""
