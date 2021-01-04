@@ -16,25 +16,45 @@ class DayWidget(qtw.QPushButton):
 		self.setSizePolicy(size_policy)
 
 		style = f"color: {self._calculate_background_letter_color()};"
-		day_label = qtw.QLabel(
+		self._day_label = qtw.QLabel(
 		    str(day.day), alignment=qtc.Qt.AlignCenter, styleSheet=style
 		)
-		font = day_label.font()
-		font.setPixelSize(75)
-		day_label.setFont(font)
+		self._resize_day_label_font()
 
-		tasks_label = qtw.QLabel(str(num_of_tasks), alignment=qtc.Qt.AlignCenter)
-		font = tasks_label.font()
-		font.setPixelSize(30)
-		tasks_label.setFont(font)
+		if num_of_tasks == 0:
+			tasks_label_text = ""
+		else:
+			tasks_label_text = str(num_of_tasks)
+
+		self._tasks_label = qtw.QLabel(
+		    tasks_label_text, alignment=qtc.Qt.AlignCenter
+		)
+		self._resize_tasks_label_font()
 
 		main_layout = qtw.QGridLayout()
-		main_layout.addWidget(day_label, 0, 0)
-		main_layout.addWidget(tasks_label, 0, 0)
+		main_layout.addWidget(self._day_label, 0, 0)
+		main_layout.addWidget(self._tasks_label, 0, 0)
 
 		self.setLayout(main_layout)
 		self.setMinimumWidth(100)
 		self.setMinimumHeight(100)
+
+	def resizeEvent(self, event):
+		"""Overriden method, called when widget is resized."""
+		self._resize_day_label_font()
+		self._resize_tasks_label_font()
+
+	def _resize_day_label_font(self):
+		font_size = min(self.width(), self.height()) / 2
+		font = self._day_label.font()
+		font.setPointSizeF(font_size)
+		self._day_label.setFont(font)
+
+	def _resize_tasks_label_font(self):
+		font_size = min(self.width(), self.height()) / 5
+		font = self._tasks_label.font()
+		font.setPointSizeF(font_size)
+		self._tasks_label.setFont(font)
 
 	def _calculate_background_letter_color(self):
 		color = self.palette().color(self.backgroundRole())
